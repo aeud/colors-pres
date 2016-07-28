@@ -165,6 +165,24 @@ ORDER BY 1 DESC
                     <h2>Colors</h2>
                     <a href="https://colors.luxola.com/" target="_blank">Demo</a>
                 </section>
+                <section>
+                    <pre><code class="sql">
+SELECT
+    timestamp(date(o.createdAt)) date,
+    o.address.country country,
+    round(sum(o.totals.netRevenue)) net
+FROM
+    [dwh.orders] o
+WHERE
+    o.isValid
+    and date(o.createdAt) >= DATE(STRFTIME_UTC_USEC(date_add(current_date(), -1, 'DAY'), '%Y-%m-01'))
+    and date(o.createdAt) < current_date()
+GROUP BY
+    date, country
+ORDER BY
+    date, country
+                    </code></pre>
+                </section>
             </section>
             <section>
                 <section data-background="#E91E63">
