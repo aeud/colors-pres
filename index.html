@@ -165,6 +165,27 @@ ORDER BY 1 DESC
                     <h2>Colors</h2>
                     <a href="https://colors.luxola.com/" target="_blank">Demo</a>
                 </section>
+                <section>
+                    <pre><code class="sql">-- [TEST Daily net revenue
+SELECT
+    timestamp(date(o.createdAt)) date,
+    o.address.country country,
+    round(sum(o.totals.netRevenue)) net
+FROM
+    [dwh.orders] o
+WHERE
+    o.isValid
+    and date(o.createdAt) >= DATE(STRFTIME_UTC_USEC(date_add(current_date(), -1, 'DAY'), '%Y-%m-01'))
+    and date(o.createdAt) < current_date()
+GROUP BY
+    date, country
+ORDER BY
+    date, country
+                    </code></pre>
+                    <p>
+                        <a href="https://colors.luxola.com/dashboards/mtd/">Dashboard Month to date</a>
+                    </p>
+                </section>
             </section>
             <section>
                 <section data-background="#E91E63">
@@ -180,6 +201,20 @@ ORDER BY 1 DESC
                 <section data-background="#fff">
                     <h2>Aero</h2>
                     <a href="https://aero.luxola.com/" target="_blank">Demo</a>
+                </section>
+                <section>
+                    <h3>Links</h3>
+                    <p><a href="https://aero.luxola.com/campaigns/next">Next campaign</a></p>
+                    <p><a href="https://aero.luxola.com/campaigns/842/">Campaign 842</a></p>
+                    <p><a href="https://aero.luxola.com/reports/general_performance_campaigns">Report</a></p>
+                </section>
+                <section>
+                    <h2>Next steps</h2>
+                    <ul>
+                        <li>Integrate the designers / copywriters to the flow</li>
+                        <li>Build more reports / recommandations about the campaigns</li>
+                        <li>How will the retail team interact with Aero?</li>
+                    </ul>
                 </section>
             </section>
             <section>
