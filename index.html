@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.1.0/css/theme/white.min.css" id="theme">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/monokai-sublime.min.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,900italic,700italic,700,500italic,500,400italic,900,300italic,300,100italic' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -28,7 +29,8 @@
         .reveal section img {
             border: none;
             box-shadow: none;
-            width: 100%;
+            max-width: 100%;
+            max-height: 600px;
         }
     </style>
 </head>
@@ -40,8 +42,111 @@
                     <h2>A brief history of</h2>
                     <h1>Data!</h1>
                 </section>
+            </section>
+            <section>
                 <section>
-                    <img src="images/funnel.png"/>
+                    <h3>Everything starts with</h3>
+                    <h2>Interactions</h2>
+                </section>
+                <section>
+                    <img src="images/website-sg.png" alt="">
+                </section>
+                <section>
+                    <img src="images/website-add.png" alt="">
+                </section>
+                <section>
+                    <img src="images/website-checkout.png" alt="" >
+                </section>
+                <section>
+                    <img src="images/email.png" alt="">
+                </section>
+                <section>
+                    <img src="images/fb.png" alt="">
+                </section>
+                <section>
+                    <img src="images/seo.png" alt="" style="max-height: 700px;">
+                </section>
+                <section>
+                    <img src="images/ion.jpg" alt="" style="max-height: 700px;">
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h3>Then comes the</h3>
+                    <h2>Collection</h2>
+                </section>
+                <section data-background="https://spencerwade.files.wordpress.com/2013/02/a25.jpg">
+                    <h3>Databases</h3>
+                </section>
+                <section>
+                    <h3>Logs</h3>
+                    <img src="images/logs.png" alt="">
+                </section>
+                <section>
+                    <h3>Google Analytics</h3>
+                    <img src="images/ga.png" alt="">
+                </section>
+                <section>
+                    <img src="images/schema.png" alt="">
+                </section>
+                <section>
+                    <img src="images/schema2.png" alt="">
+                </section>
+                <section data-background="#fff">
+                    <h2>Google BigQuery</h2>
+                    <a href="https://bigquery.cloud.google.com/" target="_blank">Demo</a>
+                </section>
+                <section>
+                    <pre><code class="sql">
+SELECT
+  timestamp(utc_usec_to_month(createdAt)) month,
+  round(sum(totals.validNetRevenue)) net_revenue,
+  sum(totals.validOrders) orders,
+FROM dwh.orders
+WHERE createdAt >= utc_usec_to_year(current_date())
+GROUP BY 1
+ORDER BY 1 DESC
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code class="sql">
+SELECT
+  device.browser browser,
+  sum(totals.visits) sessions,
+  sum(totals.pageviews) pageviews,
+FROM (
+  table_date_range(
+    [luxola.com:luxola-analytics:50639087.ga_sessions_],
+    timestamp(date_add(utc_usec_to_week(current_date(), 0), -1, 'week')),
+    timestamp(utc_usec_to_week(current_date(), 0))
+  )
+)
+GROUP BY 1
+ORDER BY 2 DESC
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code class="sql">
+SELECT
+  timestamp(date_start) date,
+  sum(integer(impressions)) impressions,
+  sum(clicks) clicks,
+  round(sum(clicks) / sum(integer(impressions)), 4) ctr,
+FROM [luxola.com:luxola-analytics:facebook.insights]
+WHERE timestamp(date_start) >= date_add(current_date(), -1, 'week')
+GROUP BY 1
+ORDER BY 1 DESC
+                    </code></pre>
+                </section>
+
+            </section>
+            <section>
+                <section>
+                    <h3>Now we have Data, we have to</h3>
+                    <h2>Use it</h2>
+                </section>
+                <section>
+                    <img src="images/funnel-new.png"/>
                 </section>
             </section>
             <section>
@@ -126,7 +231,10 @@
             progress: true,
             history: true,
             center: true,
-            transition: 'slide'
+            transition: 'slide',
+            dependencies: [
+                { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.2.0/plugin/highlight/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            ]
         });
     </script>
 </body>
